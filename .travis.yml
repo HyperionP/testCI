@@ -2,6 +2,9 @@ services:
   - docker
 before_install:
   - docker build -t testimage .
+    - docker run -d -p 127.0.0.1:80:4567 testimage /bin/sh -c "cd /root/testimage; bundle exec foreman start;"
+  - docker ps -a
+  - docker run carlad/sinatra /bin/sh -c "cd /root/testimage; bundle exec rake test"
 deploy:
   provider: script
   script: bash docker_push
